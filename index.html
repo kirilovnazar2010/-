@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Смолигів — Серце Полісся</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --forest: #1a2e1a;
+    --moss: #2d4a2d;
+    --sage: #4a6741;
+    --meadow: #7a9e6e;
+    --mist: #b8ccb0;
+    --cream: #f5f0e8;
+    --parchment: #ede5d0;
+    --wheat: #c8a96a;
+    --amber: #a07840;
+    --earth: #5c3d1e;
+    --text-dark: #1c1a16;
+    --text-mid: #3d3529;
+    --text-light: #7a6e5c;
+    --white: #faf8f4;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* ---- NAV ---- */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    transition: background 0.4s, padding 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(26, 46, 26, 0.97);
+    padding: 0.8rem 4rem;
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--cream);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--wheat); font-style: italic; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--mist);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--wheat); }
+
+  /* ---- HERO ---- */
+  .hero {
+    height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--forest);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 60%, rgba(74,103,65,0.35) 0%, transparent 60%),
+      radial-gradient(ellipse at 75% 30%, rgba(45,74,45,0.4) 0%, transparent 55%),
+      linear-gradient(160deg, #0d1f0d 0%, #1a2e1a 40%, #2d4a2d 100%);
+  }
+
+  /* Animated fireflies */
+  .firefly {
+    position: absolute;
+    width: 3px; height: 3px;
+    background: var(--wheat);
+    border-radius: 50%;
+    opacity: 0;
+    animation: fly var(--dur, 8s) ease-in-out infinite var(--delay, 0s);
+    filter: blur(0.5px);
+  }
+
+  @keyframes fly {
+    0%   { opacity: 0; transform: translate(0,0) scale(1); }
+    20%  { opacity: 0.9; }
+    50%  { opacity: 0.6; transform: translate(var(--tx,30px), var(--ty,-40px)) scale(1.5); }
+    80%  { opacity: 0.8; }
+    100% { opacity: 0; transform: translate(var(--tx2,60px), var(--ty2,-80px)) scale(0.5); }
+  }
+
+  /* SVG forest silhouette */
+  .hero-forest {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 45%;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 2rem;
+    animation: fadeUp 1.4s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--wheat);
+    font-weight: 500;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.3s both;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(4.5rem, 11vw, 9rem);
+    font-weight: 300;
+    line-height: 0.9;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.5s both;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--mist);
+    font-weight: 300;
+  }
+
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--mist);
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.7s both;
+  }
+
+  .hero-scroll {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.1s both;
+    cursor: pointer;
+  }
+  .hero-scroll span {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--mist);
+    font-weight: 400;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, var(--wheat), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.8); }
+    50% { opacity: 1; transform: scaleY(1); }
+  }
+
+  /* ---- INTRO BAND ---- */
+  .intro-band {
+    background: var(--parchment);
+    padding: 5rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 2px 1fr;
+    gap: 0 4rem;
+    align-items: center;
+  }
+  .divider-v {
+    background: linear-gradient(to bottom, transparent, var(--wheat), transparent);
+    align-self: stretch;
+  }
+  .intro-stat {
+    text-align: center;
+  }
+  .intro-stat .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    font-weight: 300;
+    color: var(--sage);
+    line-height: 1;
+  }
+  .intro-stat .num sup {
+    font-size: 2rem;
+    vertical-align: top;
+    margin-top: 1rem;
+    display: inline-block;
+  }
+  .intro-stat .label {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    font-weight: 500;
+    margin-top: 0.5rem;
+  }
+  .intro-text {
+    text-align: center;
+  }
+  .intro-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: var(--forest);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  .intro-text p {
+    font-size: 0.88rem;
+    line-height: 1.9;
+    color: var(--text-mid);
+    font-weight: 300;
+  }
+
+  /* ---- SECTION BASE ---- */
+  section { position: relative; }
+
+  .section-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--wheat);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--wheat), transparent);
+    max-width: 80px;
+  }
+
+  /* ---- HISTORY ---- */
+  .history {
+    background: var(--forest);
+    padding: 8rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .history-text .section-label { color: var(--wheat); }
+  .history-text .section-label::after { background: linear-gradient(to right, var(--wheat), transparent); }
+  .history-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 2rem;
+  }
+  .history-title em { font-style: italic; color: var(--mist); }
+
+  .history-body {
+    font-size: 0.88rem;
+    line-height: 2;
+    color: var(--mist);
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+
+  .history-quote {
+    border-left: 2px solid var(--wheat);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+  }
+  .history-quote p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--cream);
+    font-weight: 300;
+    line-height: 1.6;
+  }
+  .history-quote cite {
+    display: block;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    font-style: normal;
+    margin-top: 0.8rem;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--wheat), var(--sage), var(--moss));
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .timeline-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.5rem;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--wheat);
+    border: 2px solid var(--forest);
+    transform: translateX(-3.5px);
+  }
+  .timeline-year {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--wheat);
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+  .timeline-text {
+    font-size: 0.88rem;
+    color: var(--mist);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* ---- NATURE ---- */
+  .nature {
+    background: var(--cream);
+    padding: 8rem 4rem;
+  }
+  .nature-header {
+    max-width: 600px;
+    margin-bottom: 4rem;
+  }
+  .nature-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300;
+    color: var(--forest);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .nature-title em { color: var(--sage); font-style: italic; }
+
+  .nature-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    background: var(--mist);
+  }
+  .nature-card {
+    background: var(--parchment);
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background 0.4s;
+  }
+  .nature-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--sage);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .nature-card:hover { background: var(--white); }
+  .nature-card:hover::before { transform: scaleX(1); }
+
+  .nature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+  .nature-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--forest);
+    margin-bottom: 0.8rem;
+  }
+  .nature-card-body {
+    font-size: 0.83rem;
+    line-height: 1.9;
+    color: var(--text-light);
+    font-weight: 300;
+  }
+
+  /* ---- CULTURE ---- */
+  .culture {
+    background: var(--parchment);
+    padding: 8rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+  .culture-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300;
+    color: var(--forest);
+    line-height: 1.1;
+    margin-bottom: 2rem;
+  }
+  .culture-title em { color: var(--amber); font-style: italic; }
+  .culture-body {
+    font-size: 0.88rem;
+    line-height: 2;
+    color: var(--text-mid);
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+
+  .festival-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .festival-card {
+    background: var(--cream);
+    padding: 1.5rem;
+    border-top: 2px solid var(--wheat);
+    transition: transform 0.3s ease;
+  }
+  .festival-card:hover { transform: translateY(-4px); }
+  .festival-month {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--amber);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  .festival-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--forest);
+    margin-bottom: 0.4rem;
+  }
+  .festival-desc {
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: var(--text-light);
+    font-weight: 300;
+  }
+
+  /* ---- GALLERY ---- */
+  .gallery {
+    background: var(--forest);
+    padding: 8rem 4rem;
+  }
+  .gallery-header {
+    margin-bottom: 3rem;
+  }
+  .gallery-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.1;
+  }
+  .gallery-title em { color: var(--mist); font-style: italic; }
+
+  .mosaic {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 280px 200px;
+    gap: 3px;
+  }
+  .mosaic-item {
+    background: var(--moss);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .mosaic-item:first-child { grid-row: 1 / 3; }
+  .mosaic-item:hover .mosaic-overlay { opacity: 1; }
+
+  .mosaic-visual {
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    transition: transform 0.5s ease;
+  }
+  .mosaic-item:hover .mosaic-visual { transform: scale(1.05); }
+
+  /* Nature-themed color fills */
+  .mosaic-item:nth-child(1) .mosaic-visual { background: linear-gradient(135deg, #1a3a1a, #2d5a2d); font-size: 6rem; }
+  .mosaic-item:nth-child(2) .mosaic-visual { background: linear-gradient(135deg, #1f3a20, #3a5e2a); }
+  .mosaic-item:nth-child(3) .mosaic-visual { background: linear-gradient(135deg, #2a3a18, #4a5e2a); }
+  .mosaic-item:nth-child(4) .mosaic-visual { background: linear-gradient(135deg, #3a2a18, #5e4a2a); }
+  .mosaic-item:nth-child(5) .mosaic-visual { background: linear-gradient(135deg, #1a2e2e, #2a4e4e); }
+
+  .mosaic-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(26,46,26,0.7);
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    align-items: flex-end;
+    padding: 1.5rem;
+  }
+  .mosaic-caption {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: var(--white);
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  /* ---- PEOPLE ---- */
+  .people {
+    background: var(--cream);
+    padding: 8rem 4rem;
+  }
+  .people-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300;
+    color: var(--forest);
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+  }
+  .people-title em { color: var(--sage); font-style: italic; }
+  .people-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-bottom: 4rem;
+    font-weight: 300;
+  }
+
+  .people-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+  .person-card {
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .person-card.visible { opacity: 1; transform: translateY(0); }
+
+  .person-avatar {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: var(--parchment);
+    border: 2px solid var(--mist);
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    transition: border-color 0.3s;
+  }
+  .person-card:hover .person-avatar { border-color: var(--wheat); }
+  .person-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--forest);
+    margin-bottom: 0.3rem;
+  }
+  .person-role {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--amber);
+    font-weight: 500;
+    margin-bottom: 0.6rem;
+  }
+  .person-bio {
+    font-size: 0.78rem;
+    line-height: 1.8;
+    color: var(--text-light);
+    font-weight: 300;
+  }
+
+  /* ---- CONTACT ---- */
+  .contact {
+    background: var(--moss);
+    padding: 7rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .contact-text .section-label::after { background: linear-gradient(to right, var(--wheat), transparent); }
+  .contact-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+  }
+  .contact-title em { color: var(--mist); font-style: italic; }
+  .contact-body {
+    font-size: 0.85rem;
+    line-height: 2;
+    color: var(--mist);
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
+  .contact-items { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.83rem;
+    color: var(--mist);
+    font-weight: 300;
+  }
+  .contact-icon { font-size: 1.3rem; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mist);
+    font-weight: 500;
+  }
+  .form-input, .form-textarea {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(184,204,176,0.25);
+    padding: 0.85rem 1rem;
+    color: var(--white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.3s;
+    resize: none;
+  }
+  .form-input:focus, .form-textarea:focus {
+    border-color: var(--wheat);
+    background: rgba(255,255,255,0.12);
+  }
+  .form-input::placeholder, .form-textarea::placeholder { color: rgba(184,204,176,0.4); }
+  .form-textarea { height: 100px; }
+  .form-btn {
+    background: var(--wheat);
+    border: none;
+    color: var(--forest);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    align-self: flex-start;
+  }
+  .form-btn:hover { background: var(--amber); transform: translateY(-2px); }
+  .form-btn:active { transform: translateY(0); }
+
+  /* ---- FOOTER ---- */
+  footer {
+    background: var(--forest);
+    padding: 3rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(184,204,176,0.1);
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    color: var(--mist);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+  }
+  .footer-logo span { color: var(--wheat); font-style: italic; }
+  .footer-copy {
+    font-size: 0.7rem;
+    color: rgba(184,204,176,0.45);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+  }
+
+  /* ---- SCROLL REVEAL ---- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ---- DECORATIVE ELEMENTS ---- */
+  .ornament {
+    text-align: center;
+    color: var(--wheat);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    opacity: 0.5;
+    margin: 2rem 0;
+    letter-spacing: 0.5em;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Смо<span>лигів</span></a>
+  <ul class="nav-links">
+    <li><a href="#history">Історія</a></li>
+    <li><a href="#nature">Природа</a></li>
+    <li><a href="#culture">Культура</a></li>
+    <li><a href="#people">Люди</a></li>
+    <li><a href="#contact">Контакти</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+
+  <!-- Fireflies -->
+  <div class="firefly" style="left:10%;top:40%;--dur:9s;--delay:0s;--tx:50px;--ty:-60px;--tx2:80px;--ty2:-120px"></div>
+  <div class="firefly" style="left:25%;top:65%;--dur:7s;--delay:2s;--tx:-30px;--ty:-50px;--tx2:-60px;--ty2:-90px"></div>
+  <div class="firefly" style="left:70%;top:35%;--dur:11s;--delay:1s;--tx:40px;--ty:-70px;--tx2:70px;--ty2:-130px"></div>
+  <div class="firefly" style="left:85%;top:55%;--dur:8s;--delay:3s;--tx:-50px;--ty:-40px;--tx2:-90px;--ty2:-80px"></div>
+  <div class="firefly" style="left:50%;top:20%;--dur:10s;--delay:0.5s;--tx:30px;--ty:-45px;--tx2:55px;--ty2:-85px"></div>
+  <div class="firefly" style="left:40%;top:75%;--dur:6s;--delay:4s;--tx:-20px;--ty:-55px;--tx2:-40px;--ty2:-100px"></div>
+  <div class="firefly" style="left:60%;top:60%;--dur:12s;--delay:1.5s;--tx:60px;--ty:-35px;--tx2:100px;--ty2:-65px"></div>
+  <div class="firefly" style="left:15%;top:25%;--dur:8.5s;--delay:2.5s;--tx:35px;--ty:-65px;--tx2:65px;--ty2:-120px"></div>
+
+  <!-- Forest SVG silhouette -->
+  <svg class="hero-forest" viewBox="0 0 1440 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#0d1f0d" d="
+      M0,300 L0,220 
+      Q30,180 60,220 Q80,200 100,240 Q120,190 140,230 Q160,180 180,220 Q200,160 220,210 
+      Q240,170 260,215 Q280,175 300,220 Q320,165 340,210 Q360,155 380,205 Q400,170 420,215
+      Q440,160 460,205 Q480,150 500,200 Q520,165 540,210 Q560,150 580,200 Q600,155 620,205
+      Q640,145 660,195 Q680,160 700,205 Q720,150 740,198 Q760,155 780,200 Q800,145 820,195
+      Q840,155 860,200 Q880,145 900,195 Q920,160 940,205 Q960,150 980,200 Q1000,155 1020,205
+      Q1040,148 1060,198 Q1080,155 1100,202 Q1120,148 1140,196 Q1160,155 1180,202
+      Q1200,148 1220,196 Q1240,158 1260,204 Q1280,148 1300,196 Q1320,155 1340,202
+      Q1360,150 1380,198 Q1410,165 1440,210 L1440,300 Z"/>
+    <path fill="#0a190a" opacity="0.6" d="
+      M0,300 L0,250 
+      Q20,230 40,255 Q55,235 70,258 Q90,232 110,256 Q130,230 150,255 Q175,228 200,252
+      Q220,232 240,255 Q265,225 290,250 Q310,232 330,256 Q355,225 380,250 Q400,232 420,255
+      Q445,225 470,250 Q490,232 510,255 Q535,224 560,250 Q580,232 600,255 Q625,224 650,250
+      Q670,232 690,255 Q715,224 740,250 Q760,232 780,255 Q805,224 830,250 Q850,232 870,255
+      Q895,224 920,250 Q940,232 960,255 Q985,224 1010,250 Q1030,232 1050,255 Q1075,224 1100,250
+      Q1120,232 1140,255 Q1165,224 1190,250 Q1210,232 1230,255 Q1255,224 1280,250
+      Q1300,232 1320,255 Q1345,225 1370,250 Q1400,232 1440,255 L1440,300 Z"/>
+  </svg>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Рівненська область · Україна</p>
+    <h1 class="hero-title">Смолигів<br><em>— село</em></h1>
+    <p class="hero-sub">Де ліси шепочуть давні легенди</p>
+    <div class="hero-scroll" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">
+      <span>Гортайте</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Intro Band -->
+<section id="intro" class="intro-band reveal">
+  <div class="intro-stat">
+    <div class="num">XIV<sup>ст</sup></div>
+    <div class="label">Перша письмова згадка</div>
+  </div>
+  <div class="divider-v"></div>
+  <div class="intro-text">
+    <h2>Серце Полісся</h2>
+    <p>Смолигів — мальовниче поліське село, оповите легендами та оточене віковими лісами. Тут час плине повільніше, повітря пахне смолою і зіллям, а кожна стежина пам'ятає тисячі кроків попередніх поколінь.</p>
+  </div>
+  <div class="divider-v"></div>
+  <div class="intro-stat">
+    <div class="num">∞</div>
+    <div class="label">Років традицій</div>
+  </div>
+</section>
+
+<!-- History -->
+<section id="history" class="history">
+  <div class="history-text reveal">
+    <div class="section-label">Хроніки</div>
+    <h2 class="history-title">Вікова<br><em>Спадщина</em></h2>
+    <p class="history-body">
+      Смолигів виник у лісовому краї Полісся, де здавна оселялись перші слов'янські племена. Назва села, за однією з версій, походить від смоли — адже тут здавна займалися лісовим промислом і видобутком живиці.
+    </p>
+    <div class="history-quote">
+      <p>«Цей край — жива пам'ять нашого народу, де кожне дерево і кожен камінь несуть в собі дух предків»</p>
+      <cite>— Народна мудрість Полісся</cite>
+    </div>
+    <p class="history-body">
+      Крізь складні сторінки історії — козацькі часи, поневіряння імперій, революції — Смолигів зберіг свою неповторну ідентичність та теплоту громади.
+    </p>
+  </div>
+  <div class="timeline reveal">
+    <div class="timeline-item">
+      <div class="timeline-year">XIV століття</div>
+      <div class="timeline-text">Перша письмова згадка про поселення в поліських актах. Жителі займаються землеробством та лісовим промислом.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">XVII–XVIII ст.</div>
+      <div class="timeline-text">Розвиток ремесел та народних промислів. Смолигів входить до складу Волинського воєводства.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">ХІХ століття</div>
+      <div class="timeline-text">Будівництво церкви, заснування парафіяльної школи. Розквіт народних традицій та ткацтва.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">ХХ століття</div>
+      <div class="timeline-text">Подолання важких воєнних та повоєнних часів. Відновлення та збереження культурної спадщини.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Сучасність</div>
+      <div class="timeline-text">Відродження традицій, розвиток сільського туризму та збереження унікального поліського колориту.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Nature -->
+<section id="nature" class="nature">
+  <div class="nature-header reveal">
+    <div class="section-label">Довкілля</div>
+    <h2 class="nature-title">Поліська<br><em>Природа</em></h2>
+    <p style="font-size:0.88rem;line-height:1.9;color:var(--text-light);font-weight:300;">
+      Смолигів оточений первозданною природою Рівненщини — місцем, де збереглися давні ліси, чисті річки та унікальні болотні екосистеми.
+    </p>
+  </div>
+  <div class="nature-cards reveal">
+    <div class="nature-card">
+      <span class="nature-icon">🌲</span>
+      <div class="nature-card-title">Вікові Ліси</div>
+      <p class="nature-card-body">Сосново-дубові масиви оточують село з усіх боків. Тут зустрічаються дерева віком понад 300 років, а у травні ліс наповнюється запахом конвалій.</p>
+    </div>
+    <div class="nature-card">
+      <span class="nature-icon">💧</span>
+      <div class="nature-card-title">Чисті Води</div>
+      <p class="nature-card-body">Місцеві річки та озера зберігають кришталеву чистоту поліських вод. Рибалка та відпочинок на воді — невід'ємна частина сільського побуту.</p>
+    </div>
+    <div class="nature-card">
+      <span class="nature-icon">🦅</span>
+      <div class="nature-card-title">Дика Природа</div>
+      <p class="nature-card-body">Поліська зона є домівкою для сотень видів птахів, козуль, зайців та лисиць. Весняні та осінні міграції птахів — справжнє видовище.</p>
+    </div>
+    <div class="nature-card">
+      <span class="nature-icon">🍄</span>
+      <div class="nature-card-title">Дари Лісу</div>
+      <p class="nature-card-body">Осінь приносить рясний урожай грибів і ягід. Боровики, лисички, журавлина — все це щедрі дари поліських лісів і боліт.</p>
+    </div>
+    <div class="nature-card">
+      <span class="nature-icon">🌿</span>
+      <div class="nature-card-title">Лікувальні Трави</div>
+      <p class="nature-card-body">Традиційне знання про цілющі рослини береглось тут поколіннями. Меліса, чебрець, материнка — все росте на поліських луках.</p>
+    </div>
+    <div class="nature-card">
+      <span class="nature-icon">🌅</span>
+      <div class="nature-card-title">Краєвиди</div>
+      <p class="nature-card-body">Розкішні заходи сонця над лісовим краєм, ранкові тумани над річкою та зоряні ночі подалі від міського світла — справжній скарб для душі.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Culture -->
+<section id="culture" class="culture">
+  <div class="reveal">
+    <div class="section-label">Традиції</div>
+    <h2 class="culture-title">Жива<br><em>Культура</em></h2>
+    <p class="culture-body">
+      Поліська культура Смолигова збережена у піснях, вишивці, народних іграх та обрядах. Місцеві майстрині досі тчуть рушники з традиційними поліськими орнаментами.
+    </p>
+    <p class="culture-body">
+      Народні свята тут відзначають за старими звичаями — від Різдвяних колядок до купальських вогнів на Івана Купала. Ці традиції живі, бо їх передають від серця до серця.
+    </p>
+    <div class="ornament">✦ ✦ ✦</div>
+    <p class="culture-body">
+      Місцева кухня — окрема поема. Смолигівські дерені, гречані млинці, домашня ковбаса та медовуха зберігають смаки, які неможливо відтворити в жодному ресторані.
+    </p>
+  </div>
+  <div class="reveal">
+    <div class="section-label" style="color:var(--amber)">Свята і Events</div>
+    <div class="festival-grid">
+      <div class="festival-card">
+        <div class="festival-month">Січень</div>
+        <div class="festival-name">Різдво і Колядки</div>
+        <p class="festival-desc">Традиційні колядування від хати до хати, вечорниці та святвечірня вечеря з 12 стравами.</p>
+      </div>
+      <div class="festival-card">
+        <div class="festival-month">Березень</div>
+        <div class="festival-name">Масляна</div>
+        <p class="festival-desc">Проводи зими з млинцями, іграми та спаленням чучела — символу холодів.</p>
+      </div>
+      <div class="festival-card">
+        <div class="festival-month">Червень</div>
+        <div class="festival-name">Купала</div>
+        <p class="festival-desc">Нічні вогнища, пошук папороті, пускання вінків по воді під народні пісні.</p>
+      </div>
+      <div class="festival-card">
+        <div class="festival-month">Серпень</div>
+        <div class="festival-name">Обжинки</div>
+        <p class="festival-desc">Свято врожаю з традиційними піснями, вінком із колосся та спільною трапезою.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery -->
+<section id="gallery" class="gallery">
+  <div class="gallery-header reveal">
+    <div class="section-label">Фото</div>
+    <h2 class="gallery-title">Смолигів<br><em>у деталях</em></h2>
+  </div>
+  <div class="mosaic reveal">
+    <div class="mosaic-item">
+      <div class="mosaic-visual">🌲</div>
+      <div class="mosaic-overlay"><div class="mosaic-caption">Вікові бори Полісся</div></div>
+    </div>
+    <div class="mosaic-item">
+      <div class="mosaic-visual">🏡</div>
+      <div class="mosaic-overlay"><div class="mosaic-caption">Традиційна хата</div></div>
+    </div>
+    <div class="mosaic-item">
+      <div class="mosaic-visual">🌸</div>
+      <div class="mosaic-overlay"><div class="mosaic-caption">Весняні луки</div></div>
+    </div>
+    <div class="mosaic-item">
+      <div class="mosaic-visual">🔥</div>
+      <div class="mosaic-overlay"><div class="mosaic-caption">Купальське вогнище</div></div>
+    </div>
+    <div class="mosaic-item">
+      <div class="mosaic-visual">💧</div>
+      <div class="mosaic-overlay"><div class="mosaic-caption">Поліська річка</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- People -->
+<section id="people" class="people">
+  <div class="section-label reveal">Спільнота</div>
+  <h2 class="people-title reveal">Наші<br><em>Люди</em></h2>
+  <p class="people-subtitle reveal">Серце Смолигова — його мешканці</p>
+  <div class="people-grid">
+    <div class="person-card">
+      <div class="person-avatar">👨‍🌾</div>
+      <div class="person-name">Іван Коваль</div>
+      <div class="person-role">Сільський голова</div>
+      <p class="person-bio">Відданий своєму краю керівник, який прокладає шлях до розвитку громади.</p>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">👩‍🎨</div>
+      <div class="person-name">Ганна Лісова</div>
+      <div class="person-role">Майстриня вишивки</div>
+      <p class="person-bio">Зберігає традиційні поліські орнаменти та навчає молоде покоління давньому мистецтву.</p>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">📚</div>
+      <div class="person-name">Марія Поліщук</div>
+      <div class="person-role">Вчителька</div>
+      <p class="person-bio">Три десятиліття виховує дітей Смолигова, прищеплює любов до рідної землі та мови.</p>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">🎵</div>
+      <div class="person-name">Петро Дубовий</div>
+      <div class="person-role">Народний музикант</div>
+      <p class="person-bio">Грає на цимбалах і скрипці, зберігає народні пісні та веде гурт традиційної музики.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="contact">
+  <div class="contact-text reveal">
+    <div class="section-label">Зв'язок</div>
+    <h2 class="contact-title">Завітайте<br><em>до нас</em></h2>
+    <p class="contact-body">
+      Смолигів щиро вітає гостей. Зупиніться на ніч у гостинній хаті, скуштуйте домашньої їжі і дозвольте поліській природі відновити вас.
+    </p>
+    <div class="contact-items">
+      <div class="contact-item">
+        <span class="contact-icon">📍</span>
+        <span>Рівненська область, Україна</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">📞</span>
+        <span>+38 (0362) XXX-XX-XX</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">✉️</span>
+        <span>smolygyv.rada@gmail.com</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">⏰</span>
+        <span>Сільська рада: Пн–Пт, 9:00–17:00</span>
+      </div>
+    </div>
+  </div>
+  <div class="contact-form reveal">
+    <div class="form-group">
+      <label class="form-label">Ваше ім'я</label>
+      <input class="form-input" type="text" placeholder="Іван Франко">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Електронна пошта</label>
+      <input class="form-input" type="email" placeholder="ivan@example.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Повідомлення</label>
+      <textarea class="form-textarea" placeholder="Ваше повідомлення..."></textarea>
+    </div>
+    <button class="form-btn" onclick="handleSubmit(this)">Надіслати →</button>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">Смо<span>лигів</span></div>
+  <div class="footer-copy">© 2025 · Смолигів · Рівненська область · Україна</div>
+</footer>
+
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 80);
+  });
+
+  // Intersection Observer for reveal animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // Stagger timeline items
+        if (entry.target.classList.contains('timeline')) {
+          entry.target.querySelectorAll('.timeline-item').forEach((item, i) => {
+            setTimeout(() => item.classList.add('visible'), i * 180);
+          });
+        }
+        // Stagger person cards
+        if (entry.target.classList.contains('people-grid')) {
+          entry.target.querySelectorAll('.person-card').forEach((card, i) => {
+            setTimeout(() => card.classList.add('visible'), i * 120);
+          });
+        }
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.reveal, .timeline, .people-grid').forEach(el => observer.observe(el));
+
+  // Form submit
+  function handleSubmit(btn) {
+    btn.textContent = 'Надіслано ✓';
+    btn.style.background = 'var(--sage)';
+    btn.style.color = 'var(--white)';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = 'Надіслати →';
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.disabled = false;
+    }, 3000);
+  }
+
+  // Parallax subtle on hero
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    const heroContent = document.querySelector('.hero-content');
+    if (heroContent && y < window.innerHeight) {
+      heroContent.style.transform = `translateY(${y * 0.3}px)`;
+      heroContent.style.opacity = 1 - y / (window.innerHeight * 0.8);
+    }
+  });
+</script>
+</body>
+</html>
